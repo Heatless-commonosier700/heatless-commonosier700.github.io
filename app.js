@@ -26,12 +26,16 @@ async function loadPlayers() {
     const snapshot = await getDocs(collection(db, "players"));
 
     snapshot.forEach(doc => {
-        const data = doc.data();
+    const data = doc.data();
 
-        const li = document.createElement("li");
-        li.textContent = `${data.name} - ${data.points} pts`;
+    const li = document.createElement("li");
 
-        list.appendChild(li);
+    li.innerHTML = `
+        <span>${data.name}</span>
+        <span class="points">${data.points} pts</span>
+    `;
+
+    list.appendChild(li);
     });
 }
 

@@ -1,40 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <h1>Admin Panel</h1>
 
-<input
-    type="email"
-    id="email"
-    placeholder="Email">
+<div id="loginPanel">
 
-<input
-    type="password"
-    id="password"
-    placeholder="Password">
+    <input
+        type="email"
+        id="email"
+        placeholder="Email">
 
-<button id="loginBtn">
-    Login
-</button>
+    <input
+        type="password"
+        id="password"
+        placeholder="Password">
 
-<hr>
+    <button id="loginBtn">
+        Login
+    </button>
 
-<select id="playerSelect"></select>
+</div>
 
-<input
-    type="number"
-    id="points"
-    placeholder="Points">
+<div id="adminPanel" style="display:none;">
 
-<button id="saveBtn">
-    Save
-</button>
+    <h2>Edit Player</h2>
+
+    <select id="playerSelect"></select>
+
+    <br><br>
+
+    <input
+        type="number"
+        id="points"
+        placeholder="Points">
+
+    <button id="saveBtn">
+        Save
+    </button>
+
+</div>
 
 <script type="module" src="admin.js"></script>
 

@@ -1,4 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
 import {
     getFirestore,
     collection,
@@ -7,34 +8,84 @@ import {
     updateDoc
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-// Paste your firebaseConfig here
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.firebasestorage.app",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const loginBtn = document.getElementById("loginBtn");
 
 const select = document.getElementById("playerSelect");
+const points = document.getElementById("points");
+const saveBtn = document.getElementById("saveBtn");
 
-const players = [];
+loginBtn.onclick = async () => {
+    try {
 
-const snapshot = await getDocs(collection(db, "players"));
+        await signInWithEmailAndPassword(
+            auth,
+            email.value,
+            password.value
+        );
 
-snapshot.forEach(d => {
-    players.push({
-        id: d.id,
-        ...d.data()
+        alert("Login successful!");
+
+    } catch (e) {
+        alert(e.message);
+    }
+};
+
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) return;
+
+    loginBtn.style.display = "none";
+    email.style.display = "none";
+    password.style.display = "none";
+
+    const snapshot = await getDocs(collection(db, "players"));
+
+    snapshot.forEach(d => {
+
+        const option = document.createElement("option");
+
+        option.value = d.id;
+        option.textContent = d.data().name;
+
+        select.appendChild(option);
+
     });
 
-    const option = document.createElement("option");
-    option.value = d.id;
-    option.textContent = d.data().name;
-
-    select.appendChild(option);
 });
 
-document.getElementById("saveBtn").onclick = async () => {
+saveBtn.onclick = async () => {
 
     const id = select.value;
-    const points = Number(document.getElementById("points").value);
 
+    await updateDoc(doc(db, "players", id), {
+        points: Number(points.value)
+    });
+
+    alert("Saved!");
+
+};
     await updateDoc(doc(db, "players", id), {
         points: points
     });

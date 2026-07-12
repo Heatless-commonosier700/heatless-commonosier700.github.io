@@ -54,6 +54,8 @@ loginBtn.onclick = async () => {
     }
 };
 
+const adminPanel = document.getElementById("adminPanel");
+
 onAuthStateChanged(auth, async (user) => {
 
     if (!user) return;
@@ -62,17 +64,15 @@ onAuthStateChanged(auth, async (user) => {
     email.style.display = "none";
     password.style.display = "none";
 
+    adminPanel.style.display = "block";
+
     const snapshot = await getDocs(collection(db, "players"));
 
-    snapshot.forEach(d => {
-
+    snapshot.forEach((d) => {
         const option = document.createElement("option");
-
         option.value = d.id;
         option.textContent = d.data().name;
-
         select.appendChild(option);
-
     });
 
 });

@@ -78,18 +78,10 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 saveBtn.onclick = async () => {
-
     const id = select.value;
 
     await updateDoc(doc(db, "players", id), {
         points: Number(points.value)
-    });
-
-    alert("Saved!");
-
-};
-    await updateDoc(doc(db, "players", id), {
-        points: points
     });
 
     alert("Saved!");
